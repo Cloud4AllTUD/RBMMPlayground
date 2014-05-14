@@ -1,0 +1,127 @@
+{
+    "@context": {
+        "token": "http://registry.gpii.org/user",
+        "preferences": "http://registry.gpii.org/preference",
+        "name": "http://registry.gpii.org/preference/name",
+        "type": "http://registry.gpii.org/preference/type",
+        "value": {
+            "@id": "http://registry.gpii.org/preference/value",
+            "@type": "http://registry.gpii.org/preference/datatype"
+        },
+        "condition": "http://registry.gpii.org/preference/condition"
+    },
+    "token": "lars",
+    "preferences": [
+        {
+            "@id": "http://registry.gpii.org/common/fontSize",
+            "type": "common",
+            "name": "fontSize",
+            "value": "24",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/foregroundColor",
+            "type": "common",
+            "name": "foregroundColor",
+            "value": "white",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.highContrast.HighContrastOn",
+            "type": "applications",
+            "name": "com.microsoft.windows.highContrast.HighContrastOn",
+            "value": "true",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/org.nvda-project",
+            "type": "applications",
+            "name": "org.nvda-project",
+            "value": {
+                "speech.synth": "espeak",
+                "speech.outputDevice": "Microsoft Sound Mapper",
+                "speech.symbolLevel": "300",
+                "speech.espeak.rate": 17.20430107526882,
+                "speech.espeak.voice": "en\\en-wi",
+                "speech.espeak.pitch": 60,
+                "speech.espeak.volume": 80,
+                "reviewCursor.followFocus": false,
+                "reviewCursor.followCaret": true,
+                "reviewCursor.followMouse": true,
+                "keyboard.speakTypedWords": true,
+                "speech.espeak.rateBoost": true,
+                "keyboard.speakTypedCharacters": false,
+                "presentation.reportHelpBalloons": false,
+                "speech.espeak.sayCapForCapitals": true,
+                "virtualBuffers.autoSayAllOnPageLoad": false
+            },
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/magnifierPosition",
+            "type": "common",
+            "name": "magnifierPosition",
+            "value": "Lens",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/magnification",
+            "type": "common",
+            "name": "magnification",
+            "value": "1.5",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/tracking",
+            "type": "common",
+            "name": "tracking",
+            "value": [
+                "mouse",
+                "caret"
+            ],
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/invertColours",
+            "type": "common",
+            "name": "invertColours",
+            "value": "true",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/cursorSize",
+            "type": "common",
+            "name": "cursorSize",
+            "value": "0.9",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/mouseTrailing",
+            "type": "common",
+            "name": "mouseTrailing",
+            "value": "10",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/highContrastEnabled",
+            "type": "common",
+            "name": "highContrastEnabled",
+            "value": "true",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/magnifierEnabled",
+            "type": "common",
+            "name": "magnifierEnabled",
+            "value": "true",
+            "condition": "null"
+        },
+        {
+            "@id": "http://registry.gpii.org/common/screenReaderTTSEnabled",
+            "type": "common",
+            "name": "screenReaderTTSEnabled",
+            "value": "true",
+            "condition": "null"
+        }
+    ]
+}

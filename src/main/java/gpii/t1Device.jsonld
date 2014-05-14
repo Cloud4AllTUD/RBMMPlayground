@@ -1,0 +1,19 @@
+{
+    "@context": {
+    		"solutions": "http://registry.gpii.org/applications"
+    },
+  "solutions": 
+        [
+            "com.microsoft.windows.magnifier",
+            "com.microsoft.windows.onscreenKeyboard",
+            "org.nvda-project",
+			"com.yourdolphin.supernova-as",
+            "webinsight.webAnywhere.windows",
+            "com.texthelp.readWriteGold",
+            "net.opendirective.maavis",
+            "com.microsoft.windows.highContrast",
+            "com.microsoft.windows.mouseTracking",
+            "com.microsoft.windows.cursors"
+        ]
+
+}

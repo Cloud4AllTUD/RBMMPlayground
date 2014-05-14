@@ -1,0 +1,28 @@
+{
+    "@context": {
+        "applications": "http://registry.gpii.org/applications",
+        "type": "http://registry.gpii.org/applications/type"
+    },
+    "applications": [
+        {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.magnifier",
+            "type": "Magnifier"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/com.yourdolphin.supernova-as",
+            "type": "Magnifier"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/org.nvda-projec",
+            "type": "Screen Reader"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.onscreenKeyboard",
+            "type": "Screen Keyboard"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.highContrast",
+            "type": "High Contrast"
+        }   
+    ]
+}
