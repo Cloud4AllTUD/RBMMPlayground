@@ -190,12 +190,15 @@ public class PrototypeRBMM {
 			  Query query = QueryFactory.create(constructString) ;
 			  QueryExecution qexec = QueryExecutionFactory.create(query, m) ;
 			  acm = qexec.execConstruct() ;
-			  StmtIterator si = acm.listStatements();
+			  m.add(acm);
+			  m.write(System.out);
+			  // out-dated print all constructed RDF tripled  
+			  /*StmtIterator si = acm.listStatements();
 			  Statement s = null;
 				while (si.hasNext()) {
 					s = si.next();
 					System.out.println(s);
-				}
+				}*/
 			  qexec.close();		
 		}
 		else if (command.equals("5")){
