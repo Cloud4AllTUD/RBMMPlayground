@@ -1,0 +1,12 @@
+PREFIX gpii: <http://registry.gpii.org/>
+PREFIX prefs: <http://registry.gpii.org/preference/>
+PREFIX apps: <http://registry.gpii.org/applications/>
+PREFIX ax: <http://gpii.org/schemas/accessibility#>
+
+SELECT ?y 
+WHERE
+ { ax:environment ax:accessibilityConflict ax:multipleSolutionConflict .
+   ax:multipleSolutionConflict ax:applyATType ?x .
+   ax:multipleSolutionConflict ax:prefers ?y .
+   ?y apps:type ?x.
+ }

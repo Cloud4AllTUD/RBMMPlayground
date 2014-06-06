@@ -5,9 +5,13 @@ import gpii.schemas.UPREFS;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -202,11 +206,28 @@ public class PrototypeRBMM {
 			  qexec.close();		
 		}
 		else if (command.equals("5")){
-			LOG.info("Resolve confilcts => not implemented");
+			LOG.info("Resolve confilcts");
 			/**
 			 * TODO implement conflict resolution
 			 */
-			System.out.println("still not implemented"); 
+		    String queryStringFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\resolveMultipleSolutionConflict.sparql";
+		    String queryString = readFile(queryStringFile, StandardCharsets.UTF_8); 
+		    Query query = QueryFactory.create(queryString) ;
+			QueryExecution qexec = QueryExecutionFactory.create(query, m) ;
+			  try {
+				    ResultSet results = qexec.execSelect() ;
+				    for ( ; results.hasNext() ; )
+				    {
+				      QuerySolution soln = results.nextSolution() ;
+				      RDFNode x = soln.get("varName") ;       // Get a result variable by name.
+				      Resource r = soln.getResource("VarR") ; // Get a result variable - must be a resource
+				      Literal l = soln.getLiteral("VarL") ;   // Get a result variable - must be a literal
+				    }
+				  } finally { qexec.close() ; }			
+			///acm = qexec.execConstruct() ;
+			//m.add(acm);
+			//m.write(System.out);
+			
 		}		
 		else if (command.equals("6")) {
 			LOG.info("Output: Results as JSONLD object");
@@ -244,6 +265,12 @@ public class PrototypeRBMM {
 			
 		}
 
+	}
+	
+	static String readFile(String path, Charset encoding) throws IOException 
+			{
+			  byte[] encoded = Files.readAllBytes(Paths.get(path));
+			  return new String(encoded, encoding);
 	}
 }
 
