@@ -1,0 +1,17 @@
+PREFIX sol: <http://rbmm.org/schemas/accessibility/solutions/>
+PREFIX ax: <http://rbmm.org/schemas/accessibility/>
+
+CONSTRUCT
+{
+ax:Environment ax:accessibilityConflict ax:MultipleSolutionsConflict.
+ax:MultipleSolutionsConflict ax:applyATType ?x .
+ax:MultipleSolutionsConflict ax:applyATProduct ?product .
+}
+WHERE { 
+SELECT ?x (group_concat(distinct ?y ; separator = ",") AS ?product) (COUNT(?y) AS ?count)
+{
+ax:User ax:requiresAT ?x .
+?y sol:ATtype ?x .
+} GROUP BY ?x
+HAVING (?count > 1)
+}

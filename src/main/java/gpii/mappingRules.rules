@@ -1,7 +1,12 @@
+@prefix ax: <http://rbmm.org/schemas/accessibility/>.
+@prefix user: <http://rbmm.org/schemas/accessibility/user/>.
+@prefix prefs: <http://rbmm.org/schemas/accessibility/user/preference/>.
+@prefix sol: <http://rbmm.org/schemas/accessibility/solutions/>.
+
+
 @prefix gpii: <http://registry.gpii.org/>.
-@prefix prefs: <http://registry.gpii.org/preference/>.
 @prefix apps: <http://registry.gpii.org/applications/>.
-@prefix ax: <http://gpii.org/schemas/accessibility#>.
+
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 
 [InferRequiredAT:
@@ -15,20 +20,19 @@
 (ax:User ax:requiresAT "Screen Reader")
 ]
 [InferRequiredAT:
-(?x prefs:name ?y)
-(?y apps:type "Screen Reader")
+(?x user:preference ?y)
+(?y sol:ATtype "Screen Reader")
 ->
 (ax:User ax:requiresAT "Screen Reader")
 ]
 [InferRequiredAT:
-(?x prefs:name ?y)
-(?y apps:type "Magnifier")
+(?x user:preference ?y)
+(?y sol:ATtype "Magnifier")
 ->
 (ax:User ax:requiresAT "Magnifier")
 ]
-
 [InferPreferedAT:
-(?x gpii:preference ?y)
+(?x user:preference ?y)
 (?y prefs:type "applications")
 ->
 (ax:User ax:prefersAT ?y)

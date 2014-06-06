@@ -1,0 +1,29 @@
+{
+    "Nighttime At Home": {
+        "preferences": {
+            "http://registry.gpii.net/common/fontSize": [{
+                "value": 24
+            }]
+        },
+    
+        // Implicit AND
+        "conditions": [
+            {
+                "http://registry.gpii.net/conditions/timeOfDay": {
+                "range": {
+                    "start": 1730,
+                    "end": 730
+                }
+            },
+            {
+                "http://registry.gpii.net/conditions/location": {
+                    "gps": {
+                        "lat": "79.3N",
+                        "long": "74.9W"
+                    },
+                    "range": "200m"
+                }
+             }
+        ]
+    }
+ }

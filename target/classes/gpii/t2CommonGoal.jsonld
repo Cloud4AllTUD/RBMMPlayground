@@ -1,0 +1,30 @@
+﻿{  "@context": {
+    "pr": {
+      "@id": "http://gpii.org/schemas/accessibility/preferences",
+      "@value": "@id"
+    },
+    "gpii": "http://registry.gpii.org/"
+  },
+  "pr": [
+    {
+        "@id": "http://registry.gpii.org/common/fontSize",
+      "gpii:type": "common",
+      "gpii:name": "fontSize",
+      "gpii:value": "24",
+      "gpii:condition": "null"
+    },
+    {
+        "@id": "http://registry.gpii.org/applications/com.microsoft.windows.magnifier",
+      "gpii:type": "applications",
+      "gpii:name": "com.microsoft.windows.magnifier",
+      "gpii:value": {
+        "gpii:FollowFocus": 0,
+        "gpii:FollowCaret": 1,
+        "gpii:FollowMouse": 1,
+        "gpii:Invert": true,
+        "gpii:Magnification": 150,
+        "gpii:MagnificationMode": 3
+        },
+      "gpii:condition": "null"
+    }]
+}

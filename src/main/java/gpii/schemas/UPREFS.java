@@ -12,7 +12,7 @@ public class UPREFS {
     private static Model m_model = ModelFactory.createDefaultModel();
     
     /** <p>The namespace of the vocabulary as a string</p> */
-    public static final String NS = "http://gpii.org/schemas/accessibility#";
+    public static final String NS = "http://rbmm.org/schemas/accessibility/";
     
     /** <p>The namespace of the vocabulary as a string</p>
      *  @see #NS */
@@ -21,46 +21,50 @@ public class UPREFS {
     /** <p>The namespace of the vocabulary as a resource</p> */
     public static final Resource NAMESPACE = m_model.createResource( NS );
     
-    /** <p>Datatype of a preference .</p> */
-    public static final Property PrefDatatype = m_model.createProperty( "http://gpii.org/schemas/accessibility#PrefDatatype" );
-    
-    /** <p>Name of a preference .</p> */
-    public static final Property PrefName = m_model.createProperty( "http://gpii.org/schemas/accessibility#PrefName" );
-    
-    /** <p>Value of a preference .</p> */
-    public static final Property PrefValue = m_model.createProperty( "http://gpii.org/schemas/accessibility#PrefValue" );
-    
-    /** <p>Value range of a preference .</p> */
-    public static final Property PrefValueRange = m_model.createProperty( "http://gpii.org/schemas/accessibility#PrefValueRange" );
-    
-    /** <p>A user has accessibility.</p> */
-    public static final Property hasPrefs = m_model.createProperty( "http://gpii.org/schemas/accessibility#hasPrefs" );
-    
-    /** <p>Application specific accessibility preferences of a person .</p> */
-    public static final Resource Appspecific = m_model.createResource( "http://gpii.org/schemas/accessibility#Appspecific" );
-    
-    /** <p>Common accessibility preferences of a person.</p> */
-    public static final Resource Common = m_model.createResource( "http://gpii.org/schemas/accessibility#Common" );
+    /** <p>User requires specific accessibility settings.</p> */
+    public static final Resource User = m_model.createResource( "http://rbmm.org/schemas/accessibility/user" );
     
     /** <p>Preferences of a person.</p> */
-    public static final Resource Preference = m_model.createResource( "http://gpii.org/schemas/accessibility#Preference" );
+    public static final Resource Preference = m_model.createResource( "http://rbmm.org/schemas/accessibility/user/preference" );
     
-    // effectively used; to be stored permanently
+    /** <p>Name of a preference .</p> */
+    public static final Property name = m_model.createProperty( "http://rbmm.org/schemas/accessibility/user/preference/name" );
     
-    /** <p>User requires specific accessibility settings.</p> */
-    public static final Resource User = m_model.createResource( "http://gpii.org/schemas/accessibility#User" );
+    /** <p>Value of a preference .</p> */
+    public static final Property value = m_model.createProperty( "http://rbmm.org/schemas/accessibility/user/preference/value" );
     
-    public static final Property requiresAT = m_model.createProperty( "http://gpii.org/schemas/accessibility#requiresAT" );
+    /** <p>Type of a preference .</p> */
+    public static final Property type = m_model.createProperty( "http://rbmm.org/schemas/accessibility/user/preference/type" );
+    
+    
+    public static final Property requiresAT = m_model.createProperty( "http://gpii.org/schemas/accessibility/requiresAT" );
     
     // to distinguish between preferred AT (explicitly though user voting) and used AT (implicitly through app-specific prefs)
-    public static final Property prefersAT = m_model.createProperty( "http://gpii.org/schemas/accessibility#prefersAT" );
+    public static final Property prefersAT = m_model.createProperty( "http://gpii.org/schemas/accessibility/prefersAT" );
+ 
+    public static final Resource Environment = m_model.createResource( "http://gpii.org/schemas/accessibility/environment" );
+
+    /** <p>installed solution in environment.</p> */
+    public static final Property installedSolutions = m_model.createProperty( "http://rbmm.org/schemas/accessibility/environment/installedSolutions" );
+
     
-    public static final Resource Environment = m_model.createResource( "http://gpii.org/schemas/accessibility#Environment" );
+    /** TODO
+     *  this should be a sub class of a conflict resource
+     *    
+     */
+    public static final Resource AccessibilityConflict = m_model.createResource();
     
-    public static final Resource MultipleSolutionsConflict = m_model.createResource( "http://gpii.org/schemas/accessibility#MultipleSolutionsConflict" );
+    /**
+     * TODO no instances in my accessibility schema! 
+     * The goal is that someone else can also use this schema! 
+     * I need a place where to instantiate the   
+     */
+    public static final Literal MultipleSolutionsConflict = m_model.createLiteral("MultipleSolutionsConflict"); 
+    
+    //public static final Resource  = m_model.createResource( "http://gpii.org/schemas/accessibility#MultipleSolutionsConflict" );
     
     // class to describe accessibility conflicts
-    public static final Property accessibilityConflict = m_model.createProperty( "http://gpii.org/schemas/accessibility#accessibilityConflict" );
+    public static final Property has = m_model.createProperty( "http://gpii.org/schemas/accessibility#accessibilityConflict" );
     
     // class to describe certain assistive technology classes  
     public static final Resource ATType = m_model.createResource( "http://gpii.org/schemas/accessibility#ATType" );
@@ -69,4 +73,7 @@ public class UPREFS {
     
     public static final Property applyATProduct = m_model.createProperty( "http://gpii.org/schemas/accessibility#applyATProduct" );
     
+    public static final Property launchSolutions = m_model.createProperty( "http://gpii.org/schemas/accessibility#launchSolutions" );
+    
+   
 }

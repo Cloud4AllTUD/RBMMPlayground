@@ -34,6 +34,20 @@
             "condition": "null"
         },
         {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.magnifier",
+            "type": "applications",
+            "name": "com.microsoft.windows.magnifier",
+            "value": {
+                "FollowFocus": 0,
+                "FollowCaret": 1,
+                "FollowMouse": 1,
+                "Invert": true,
+                "Magnification": 150,
+                "MagnificationMode": 3
+            },
+            "condition": "null"
+        },
+        {
             "@id": "http://registry.gpii.org/applications/org.nvda-project",
             "type": "applications",
             "name": "org.nvda-project",
