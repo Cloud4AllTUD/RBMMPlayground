@@ -39,6 +39,8 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -177,7 +179,7 @@ public class PrototypeRBMM {
 	            }
 	            prefsArray.put(innerPrefsObject);
 	        }
-		    pContext.put(UPREFS.Preference.toString(), prefsArray);
+		    pContext.put(UPREFS.preference.toString(), prefsArray);
 		    // output: store as file: t2Common.jsonld
 		    byte dataToWrite[] = pContext.toString().getBytes(StandardCharsets.US_ASCII);
 		    // TODO: organize project directories; 
@@ -201,7 +203,13 @@ public class PrototypeRBMM {
 			
 			// (2) transform device characteristics from JSONObject to JSONArray
 			// TODO: input a JSON Object not a file 
-			String deviceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Device.json";
+			
+			// test file for multiple solutions
+			// String deviceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Device.json";
+			
+			// test file for no solutions
+			 String deviceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2DeviceNOAT.json";
+			
 			String deviceString = readFile(deviceFile, StandardCharsets.UTF_8);
 			JSONTokener deviceTokener = new JSONTokener(deviceString);
 			device = new JSONArray(deviceTokener);			
@@ -292,43 +300,25 @@ public class PrototypeRBMM {
 		} 
 		else if (command.equals("4")){
 			LOG.info("SPARQL Query: detect conflicts");
-			  /**
-			   * TODO 
-			   * Fix: ?y is not constructed in the RDF model.
-			   * SPARQL query not in source code 
-			   */
-
-			/*String constructString = "CONSTRUCT";
-			  constructString += "{ ";
-			  constructString += " <http://gpii.org/schemas/accessibility#Environment> <http://gpii.org/schemas/accessibility#accessibilityConflict> <http://gpii.org/schemas/accessibility#MultipleSolutionsConflict> .";
-			  constructString += " <http://gpii.org/schemas/accessibility#MultipleSolutionsConflict> <http://gpii.org/schemas/accessibility#applyATType> ?x .";
-			  constructString += " <http://gpii.org/schemas/accessibility#MultipleSolutionsConflict> <http://gpii.org/schemas/accessibility#applyATProduct> ?y .";
-			  constructString += " } ";
-			  constructString += "WHERE { ";
-			  constructString += " SELECT ?x (COUNT(?y) AS ?count) ";
-				  constructString += "{ ";
-				  constructString += "<http://gpii.org/schemas/accessibility#User> <http://gpii.org/schemas/accessibility#requiresAT> ?x . ";
-				  constructString += "?y <http://registry.gpii.org/applications/type> ?x . ";	
-				  constructString += "} GROUP BY ?x";
-				  constructString += " HAVING (?count > 1)";
-				  constructString += " }";*/
-		    String queryStringFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\detectMultipleSolutionConflict.sparql";
-		    String queryString = readFile(queryStringFile, StandardCharsets.UTF_8); 
-			  
-			  
-			  Query query = QueryFactory.create(queryString) ;
-			  QueryExecution qexec = QueryExecutionFactory.create(query, m) ;
-			  acm = qexec.execConstruct() ;
-			  m.add(acm);
-			  m.write(System.out);
-			  // out-dated print all constructed RDF tripled  
-			  /*StmtIterator si = acm.listStatements();
-			  Statement s = null;
-				while (si.hasNext()) {
-					s = si.next();
-					System.out.println(s);
-				}*/
-			  qexec.close();		
+		    String multSolConflictFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\detectMultipleSolutionConflict.sparql";
+		    String noSolConflictFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\detectNoSolutionConflict.sparql";
+		    		    
+		    String[] queries = {readFile(multSolConflictFile, StandardCharsets.UTF_8), readFile(noSolConflictFile, StandardCharsets.UTF_8)}; 
+	        // Run each query, then show its individual results, and add
+	        // them to the combined model
+	        for ( String q : queries ) {
+	            Query query = QueryFactory.create(q) ;
+				QueryExecution qexec = QueryExecutionFactory.create(query, m) ;
+				acm = qexec.execConstruct();
+				/* output results  for testing 
+				System.out.println( "\n<!-- results of: " +query+" -->" );
+	            acm.write( System.out, "RDF/XML-ABBREV" );
+	            */
+	            m.add(acm);
+	            m.write(System.out); 
+				qexec.close();	
+	        }			  
+	
 		}
 		else if (command.equals("5")){
 			LOG.info("Resolve confilcts");

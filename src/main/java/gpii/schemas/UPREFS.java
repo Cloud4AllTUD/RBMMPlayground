@@ -24,28 +24,29 @@ public class UPREFS {
     /** <p>User requires specific accessibility settings.</p> */
     public static final Resource User = m_model.createResource( "http://rbmm.org/schemas/accessibility/user" );
     
+    public static final Resource Environment = m_model.createResource( "http://gpii.org/schemas/accessibility/environment" );
+    
     /** <p>Preferences of a person.</p> */
-    public static final Resource Preference = m_model.createResource( "http://rbmm.org/schemas/accessibility/user/preference" );
+    public static final Property preference = m_model.createProperty( "http://rbmm.org/schemas/accessibility/preference" );
     
     /** <p>Name of a preference .</p> */
-    public static final Property name = m_model.createProperty( "http://rbmm.org/schemas/accessibility/user/preference/name" );
+    public static final Property name = m_model.createProperty( "http://rbmm.org/schemas/accessibility/preference/name" );
     
     /** <p>Value of a preference .</p> */
-    public static final Property value = m_model.createProperty( "http://rbmm.org/schemas/accessibility/user/preference/value" );
+    public static final Property value = m_model.createProperty( "http://rbmm.org/schemas/accessibility/preference/value" );
     
     /** <p>Type of a preference .</p> */
-    public static final Property type = m_model.createProperty( "http://rbmm.org/schemas/accessibility/user/preference/type" );
+    public static final Property type = m_model.createProperty( "http://rbmm.org/schemas/accessibility/preference/type" );
     
-    
+    /** <p> User requires a specific class of AT .</p> */
     public static final Property requiresAT = m_model.createProperty( "http://gpii.org/schemas/accessibility/requiresAT" );
     
     // to distinguish between preferred AT (explicitly though user voting) and used AT (implicitly through app-specific prefs)
+    /** <p> User prefers a specific AT product .</p> */
     public static final Property prefersAT = m_model.createProperty( "http://gpii.org/schemas/accessibility/prefersAT" );
  
-    public static final Resource Environment = m_model.createResource( "http://gpii.org/schemas/accessibility/environment" );
-
     /** <p>installed solution in environment.</p> */
-    public static final Property installedSolutions = m_model.createProperty( "http://rbmm.org/schemas/accessibility/environment/installedSolutions" );
+    public static final Property installedSolutions = m_model.createProperty( "http://rbmm.org/schemas/accessibility/installedSolutions" );
 
     
     /** TODO

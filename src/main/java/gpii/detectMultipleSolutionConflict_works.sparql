@@ -1,4 +1,7 @@
-﻿CONSTRUCT
+PREFIX sol: <http://rbmm.org/schemas/accessibility/solutions/>
+PREFIX ax: <http://rbmm.org/schemas/accessibility/>
+
+CONSTRUCT
 {
 ax:Environment ax:accessibilityConflict ax:MultipleSolutionsConflict.
 ax:MultipleSolutionsConflict ax:applyATType ?x .
@@ -13,23 +16,3 @@ ax:User ax:requiresAT ?x .
 HAVING (?count > 1)
 }
 
-ALternative:
-
-  <rdf:Description rdf:about="http://rbmm.org/schemas/accessibility/MultipleSolutionsConflict">
-    <j.4:applyProduct>http://registry.gpii.org/applications/com.yourdolphin.supernova-as,http://registry.gpii.org/applications/org.nvda-project</j.4:applyProduct>
-    <j.4:applyProduct>http://registry.gpii.org/applications/com.microsoft.windows.magnifier,http://registry.gpii.org/applications/com.yourdolphin.supernova-as</j.4:applyProduct>
-  </rdf:Description>
-
-CONSTRUCT
-{
-ax:Environment ax:accessibilityConflict ax:MultipleSolutionsConflict .
-ax:MultipleSolutionsConflict ax:applyProduct ?product .
-}
-WHERE { 
-SELECT ?x (group_concat(distinct ?y ; separator = ",") AS ?product) (COUNT(?y) AS ?count)
-{
-ax:User ax:requiresAT ?x .
-?y sol:ATtype ?x .
-} GROUP BY ?x
-HAVING (?count > 1)
-}

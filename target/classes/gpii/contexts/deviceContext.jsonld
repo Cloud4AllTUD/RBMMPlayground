@@ -1,5 +1,5 @@
 {
     "@context": {
-        "solutions": "http://rbmm.org/schemas/accessibility/environment/installedSolutions"
+        "solutions": "http://rbmm.org/schemas/accessibility/installedSolutions"
     }
 }

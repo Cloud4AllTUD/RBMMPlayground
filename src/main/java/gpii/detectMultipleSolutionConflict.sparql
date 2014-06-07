@@ -1,17 +1,20 @@
-PREFIX sol: <http://rbmm.org/schemas/accessibility/solutions/>
-PREFIX ax: <http://rbmm.org/schemas/accessibility/>
+PREFIX  sol:  <http://rbmm.org/schemas/accessibility/solutions/>
+PREFIX  ax:   <http://rbmm.org/schemas/accessibility/>
 
-CONSTRUCT
-{
-ax:Environment ax:accessibilityConflict ax:MultipleSolutionsConflict.
-ax:MultipleSolutionsConflict ax:applyATType ?x .
-ax:MultipleSolutionsConflict ax:applyATProduct ?product .
-}
-WHERE { 
-SELECT ?x (group_concat(distinct ?y ; separator = ",") AS ?product) (COUNT(?y) AS ?count)
-{
-ax:User ax:requiresAT ?x .
-?y sol:ATtype ?x .
-} GROUP BY ?x
-HAVING (?count > 1)
-}
+CONSTRUCT 
+  { ax:Environment ax:accessibilityConflict ax:MultipleSolutionsConflict .
+    ax:MultipleSolutionsConflict ?y1 ?x .
+    ax:MultipleSolutionsConflict ?y2 ?x .}
+WHERE
+  { SELECT  ?x ?y1 ?y2
+    WHERE
+      { ax:user ax:requiresAT ?x .
+        ?y1 sol:ATtype ?x .
+        ?y1 sol:id ?n .
+        ?b ax:installedSolutions ?n
+        FILTER exists {?y2 sol:ATtype ?x .
+          ?y2 sol:id ?n .
+          ?b ax:installedSolutions ?n
+        }
+      }
+  }

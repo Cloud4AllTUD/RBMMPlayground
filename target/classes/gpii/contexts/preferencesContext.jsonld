@@ -1,7 +1,7 @@
 {
     "@context": {
         "pr": {
-            "@id": "http://rbmm.org/schemas/accessibility/preferences",
+            "@id": "http://rbmm.org/schemas/accessibility/preference",
             "@value": "@id"
         }
     }

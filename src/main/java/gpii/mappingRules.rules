@@ -1,6 +1,6 @@
 @prefix ax: <http://rbmm.org/schemas/accessibility/>.
 @prefix user: <http://rbmm.org/schemas/accessibility/user/>.
-@prefix prefs: <http://rbmm.org/schemas/accessibility/user/preference/>.
+@prefix prefs: <http://rbmm.org/schemas/accessibility/preference/>.
 @prefix sol: <http://rbmm.org/schemas/accessibility/solutions/>.
 
 
@@ -12,28 +12,28 @@
 [InferRequiredAT:
 (?x prefs:name "magnifierEnabled")
 ->
-(ax:User ax:requiresAT "Magnifier")
+(ax:user ax:requiresAT "Magnifier")
 ]
 [InferRequiredAT:
 (?x prefs:name "screenReaderTTSEnabled")
 ->
-(ax:User ax:requiresAT "Screen Reader")
+(ax:user ax:requiresAT "Screen Reader")
 ]
 [InferRequiredAT:
 (?x user:preference ?y)
 (?y sol:ATtype "Screen Reader")
 ->
-(ax:User ax:requiresAT "Screen Reader")
+(ax:user ax:requiresAT "Screen Reader")
 ]
 [InferRequiredAT:
 (?x user:preference ?y)
 (?y sol:ATtype "Magnifier")
 ->
-(ax:User ax:requiresAT "Magnifier")
+(ax:user ax:requiresAT "Magnifier")
 ]
 [InferPreferedAT:
 (?x user:preference ?y)
 (?y prefs:type "applications")
 ->
-(ax:User ax:prefersAT ?y)
+(ax:user ax:prefersAT ?y)
 ]
