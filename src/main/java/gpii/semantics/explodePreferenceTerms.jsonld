@@ -1,0 +1,50 @@
+{
+    "@context": {
+        "terms": "http://rbmm.org/schemas/accessibility/terms/abstract",
+        "value": "http://rbmm.org/schemas/accessibility/terms/abstract/value",
+        "rating": "http://rbmm.org/schemas/accessibility/terms/abstract/rating",
+        "recommended": "http://rbmm.org/schemas/accessibility/terms/abstract/recomendations"
+    },
+    "terms": [
+        {
+          "http://registry.gpii.org/common/pointerControllEnhancement" : {
+            "value": true,
+            "rating": 9,
+            "recommended": {
+                "http://registry.gpii.org/common/cursorSize": 0.5,
+                "http://registry.gpii.org/common/cursorColour": "red"
+            }
+          }
+        },
+        {
+          "http://registry.gpii.org/common/pointerControllEnhancement" : {
+            "value": true,
+            "rating": 5,
+            "recommended": {
+                "http://registry.gpii.org/common/cursorTrails": true,
+                "http://registry.gpii.org/common/cursorTrailsLength": 0.2
+            }
+          }
+        },
+        {
+          "http://registry.gpii.org/common/pointerControllEnhancement" : {
+            "value": "visibility",
+            "rating": 9,
+            "recommended": {
+                "http://registry.gpii.org/common/cursorSize": 0.5,
+                "http://registry.gpii.org/common/cursorColour": "red"
+            }
+          }
+        },
+        {
+          "http://registry.gpii.org/common/pointerControllEnhancement" : {
+            "value": "visibility",
+            "rating": 5,
+            "recommended": {
+                "http://registry.gpii.org/common/cursorTrails": true,
+                "http://registry.gpii.org/common/cursorTrailsLength": 0.2
+            }
+          }
+        }
+    ]
+}

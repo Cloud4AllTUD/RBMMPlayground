@@ -1,0 +1,50 @@
+﻿<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+		 xmlns="http://gpii.org/schemas/accessibility#"
+         xml:base="http://gpii.org/schemas/accessibility">
+  
+  <Class rdf:ID="User">
+	<rdfs:comment>User requires specific accessibility settings. </rdfs:comment>
+  </Class>
+  
+   <Class rdf:ID="Preference">
+	<rdfs:comment>Preferences of a person. </rdfs:comment>
+  </Class>
+  
+  <Class rdf:ID="Common">
+    <subClassOf rdf:resource="#Preference"/>
+	<rdfs:comment>Common accessibility preferences of a person. </rdfs:comment>
+  </Class>
+
+  <Class rdf:ID="Appspecific">
+    <subClassOf rdf:resource="#Preference"/>
+    <rdfs:comment>Application specific accessibility preferences of a person . </rdfs:comment>
+  </Class>  
+  
+  <rdf:Property rdf:ID="hasPrefs">
+    <subPropertyOf rdf:resource="#hasPrefs"/>
+    <range rdf:resource="#Preference"/>
+    <domain rdf:resource="#User"/>
+    <rdfs:comment>A user has accessibility preferences. </rdfs:comment>
+  </rdf:Property>
+  
+	<rdf:Property rdf:ID="PrefName">
+		<domain rdf:resource="#Preference"/>
+		<rdfs:comment>Name of a preference . </rdfs:comment>
+	</rdf:Property>
+
+	<rdf:Property rdf:ID="PrefValue">
+		<domain rdf:resource="#Preference"/>
+		<rdfs:comment>Value of a preference . </rdfs:comment>
+	</rdf:Property>
+
+	<rdf:Property rdf:ID="PrefDatatype">
+		<domain rdf:resource="#Preference"/>
+		<rdfs:comment>Datatype of a preference . </rdfs:comment>
+	</rdf:Property>		
+
+	<rdf:Property rdf:ID="PrefValueRange">
+		<domain rdf:resource="#Preference"/>
+		<rdfs:comment>Value range of a preference . </rdfs:comment>
+	</rdf:Property>	
+</rdf:RDF>

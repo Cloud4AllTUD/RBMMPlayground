@@ -1,0 +1,80 @@
+@prefix ax: <http://rbmm.org/schemas/accessibility/>.
+@prefix prefs: <http://rbmm.org/schemas/accessibility/preference/>.
+@prefix sol: <http://rbmm.org/schemas/accessibility/solutions/>.
+@prefix terms: <http://rbmm.org/schemas/accessibility/terms/>.
+@prefix abstract: <http://rbmm.org/schemas/accessibility/terms/abstract/>.
+@prefix xs: http://www.w3.org/2001/XMLSchema#.
+
+// TODO: mappings of common terms referring to AT requirements should be modeled semantically in JSON-LD making it easier to modify! 
+[InferRequiredAT:
+(?x prefs:name "magnifierEnabled")
+->
+(ax:user ax:requiresAT "Magnifier")
+]
+[InferRequiredAT:
+(?x prefs:name "screenReaderTTSEnabled")
+->
+(ax:user ax:requiresAT "Screen Reader")
+]
+[InferRequiredAT:
+(?x ax:preference ?y)
+(?y sol:ATtype "Screen Reader")
+->
+(ax:user ax:requiresAT "Screen Reader")
+]
+[InferRequiredAT:
+(?x ax:preference ?y)
+(?y sol:ATtype "Magnifier")
+->
+(ax:user ax:requiresAT "Magnifier")
+]
+
+// Infer preferred products!
+[InferPreferedAT:
+(?x ax:preference ?y)
+(?y prefs:type "applications")
+->
+(ax:user ax:prefersAT ?y)
+]
+
+// ******************** Conflicts **********************
+// 1. Detect Multiple Solution Conflict 
+[MultipleSolutionConflict:
+(ax:user ax:requiresAT ?x)
+(?y1 sol:ATtype ?x)
+(?y2 sol:ATtype ?x)
+(?y1 sol:id ?n)
+(?y2 sol:id ?n)
+(?b ax:installedSolutions ?n)
+->
+(ax:Environment ax:accessibilityConflict ax:MultipleSolutionsConflict)
+(ax:MultipleSolutionsConflict ?y1 ?x)
+(ax:MultipleSolutionsConflict ?y2 ?x)
+]
+
+// Resolution 1: Choose a preferred solution, if more than one is preferred, choose one of the preferred randomly  
+// Test 1: noAppSpecificPrefs.json multipleMagnifierScreanreader.json => expected rule not to fire => accepted 
+// Test 2: singleAppSpecificPrefs.json and multipleMagnifierScreanreader.json => expected rule to fire => accepted
+// Test 3: multipleAppSpecficPrefs.json and multipleMagnifierScreanreader.json => expected rule to fire => accepted  
+[ResolveMultipleSolutionConflict:
+noValue(ax:LaunchSolutions ?z ?x)
+(ax:MultipleSolutionsConflict ?y ?x)
+(ax:user ax:prefersAT ?y)
+->
+(ax:Environment ax:inferredConfiguration ax:LaunchSolutions)
+(ax:LaunchSolutions ?y ?x)
+]
+
+// Resolution 2 (default, only run if no better solution matches): Randomly choose a solution that is installed when nothing is preferred. Based on the order of the installed solution object as the 1st match wins!  
+// Test 2: noAppSpecificPrefs.json multipleMagnifierScreanreader.json => expected rule to fire => accepted
+// Test 1: singleAppSpecificPrefs.json and multipleMagnifierScreanreader.json => expected rule not to fire => ?
+// Test 3: multipleAppSpecficPrefs.json and multipleMagnifierScreanreader.json => expected rule not to fire => ?
+// TODO: AlternativeSolution
+[ResolveMultipleSolutionConflict:
+noValue(ax:LaunchSolutions ?z ?x)
+(ax:MultipleSolutionsConflict ?y ?x)
+noValue(ax:user ax:prefersAT ?y)
+->
+(ax:Environment ax:inferredConfiguration ax:LaunchSolutions)
+(ax:LaunchSolutions ?y ?x)
+]

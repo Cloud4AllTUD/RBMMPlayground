@@ -1,7 +1,6 @@
 package gpii;
 
 import gpii.schemas.UPREFS;
-import gpii.contexts.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -103,9 +102,11 @@ public class PrototypeRBMM {
 		System.out.println("[1] Load preferences (JSONLD) and device characteristics (JSONLD)");
 		System.out.println("[2] Load other semantic data source (registry and solutions) ");
 		System.out.println("[3] Run JENA rules to infer knowledge used for conflict resolution");
-		System.out.println("[4] SPARQL Query: detect conflicts");
-		
+		// not nerssesary anymore 
+		System.out.println("[4] SPARQL Query: detect conflicts");		
 		System.out.println("[5] Resolve confilcts");
+		
+		// to revise the output 
 		System.out.println("[6] Output: Results as JSONLD object");
 
 		// Helper functions 
@@ -118,35 +119,61 @@ public class PrototypeRBMM {
 
 		return input;
 	}
-
+	
+	/** 
+	 * pre-processing of preferences  
+	 * input: JSON object - same as always (see test files in gpii.testData.preferences)
+	 * pre-processing: 
+	 * (1) Transforms the original preference set to the request format (gpii.testdData.input.preferences.jsonld) 
+	 * (2) Transforms the original solution object to the requested format (gpii.testdData.input.solutions.jsonld)			 * 
+	 */
 	public static void execute(String command) throws IOException, JSONException, URISyntaxException {
+		
+		/** 
+		 * TODO this are static input source used in the RBMM Web Service.
+		 * These input sources should be exchangeable with any other semantic representations of preference terms or solutions
+		 */
+		
+		// Define semantic representations: 
+	    // String reg = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\semantics\\registry.jsonld";
+	    String semanticsSolutions = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\semantics\\semanticsSolutions.jsonld";
+	    String explodePrefTerms = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\semantics\\explodePreferenceTerms.jsonld";
+	    
+	    
+		// Final input format for the reasoning process. Created in [0].  
+		String preferenceInput = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\input\\preferences.jsonld";
+		String solutionsInput = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\input\\solutions.jsonld";
+		
 		if (command.equals("0")){
-			LOG.info("Pre-processing - add context to preferences and device characteristics and store as JSONLD");
-			//TODO add context in pre-processing in Javascript part
-			/** 
-			 * pre-processing of preferences  
-			 * input: JSON object - same as always (see test file t2Common.json)
-			 * pre-processing: (1) load context (see test file contexts/preferenesContext.jsonld); 
-			 * (2) transform device characteristics from JSONObject to JSONArray and (3) put JSONArray to context
-			 * output: JSON-LD stored locally (see test file t2Device.jsonld)
+			LOG.info("Pre-processing - add context to preferences and device characteristics and store as JSONLD");		
+			/**
+			 * Original preferences sets and solutions- test files for multiple solution conflict resolution
+			 * TODO automated tests 
 			 */
-			JSONObject preferences; 
-			JSONObject pContext;			
+			// solution test file for multiple solutions conflict:
+			String deviceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\installedSolutions\\multipleMagnifierScreenreader.json";
 			
-			// (1) load context
-			String pContextFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\contexts\\preferencesContext.jsonld";
-			String pContextString = readFile(pContextFile, StandardCharsets.UTF_8);			
-			JSONTokener pContextTokener = new JSONTokener(pContextString);
-			pContext = new JSONObject(pContextTokener);
+			// 1. preferences test files for multiple solution conflict: 
+			// 1.1 Test: nothing preferred => resolution is to launch on randomly 
+			//String preferenceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\preferences\\noAppSpecificPrefs.json";
 			
-			// (2) transform device characteristics from JSONObject to JSONArray
-			// TODO: input a JSON Object not a file 
-			String preferenceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Common.json";
+			// 1.2 Test: one single solution is preferred => resolution is to launch the preferred 
+			//String preferenceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\preferences\\singleAppSpecificPrefs.json";
+			
+			// 1.3 Test: one single solution is preferred => resolution is to launch the preferred 
+			//String preferenceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\preferences\\multipleAppSpecificPrefs.json";
+			
+			// 2. preferences test files for Abstract Preferences Conflict
+			// 2.1 Test: pointerControllEnhancement = visibility 
+			String preferenceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\preferences\\pointerControllEnhancement.json";
+			
+			// Transforming preferences: 
 			String preferenceString = readFile(preferenceFile, StandardCharsets.UTF_8);
 			JSONTokener preferencesTokener = new JSONTokener(preferenceString);
-			preferences = new JSONObject(preferencesTokener);			
-		
-			// (3) put JSONArray to context
+			JSONObject preferences = new JSONObject(preferencesTokener);		
+			
+			JSONObject outerPrefsObject = new JSONObject();
+
 			JSONArray prefsArray = new JSONArray();
 
 	        Iterator<?> keys = preferences.keys();
@@ -158,8 +185,8 @@ public class PrototypeRBMM {
 	             * gpii:type = common or application
 	             * gpii:name = preference name
 	             * gpii:value = either the value (common) or an JSONObject of values (app-specific)   
-	             */
-	            JSONObject innerPrefsObject = new JSONObject (); 
+	             */ 
+	            JSONObject innerPrefsObject = new JSONObject();
 	            innerPrefsObject.put("@id", key);
 	            if (key.contains("common")) innerPrefsObject.put(UPREFS.type.toString(), "common"); 
 	            if (key.contains("applications")) innerPrefsObject.put(UPREFS.type.toString(), "applications");
@@ -177,44 +204,19 @@ public class PrototypeRBMM {
 	        	        	innerPrefsObject = getPreferenceValues(innerPrefsObject, values.get(i), key);
 	        		    }
 	            }
-	            prefsArray.put(innerPrefsObject);
+	            prefsArray.put(innerPrefsObject);	            
 	        }
-		    pContext.put(UPREFS.preference.toString(), prefsArray);
-		    // output: store as file: t2Common.jsonld
-		    byte dataToWrite[] = pContext.toString().getBytes(StandardCharsets.US_ASCII);
-		    // TODO: organize project directories; 
-		    writeFile("C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Common.jsonld", dataToWrite);
+	        //LOG.info(prefsArray);
+	        outerPrefsObject.put(UPREFS.preference.toString(), prefsArray);
+		    byte dataToWrite[] = outerPrefsObject.toString().getBytes(StandardCharsets.US_ASCII);
+		    writeFile(preferenceInput, dataToWrite);
 		    
-			/** 
-			 * pre-processing of device characteristics  
-			 * input: JSON object - same as always (see test file t2Device.json)
-			 * pre-processing: (1) load context (see test file contexts/deviceContext.jsonld); 
-			 * (2) transform device characteristics from JSONObject to JSONArray and (3) put JSONArray to context
-			 * output: JSON-LD stored locally (see test file t2Device.jsonld)
-			 */
-			JSONArray device; 
-			JSONObject dContext;			
-			
-			// (1) load context
-			String contextFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\contexts\\deviceContext.jsonld";
-			String contextString = readFile(contextFile, StandardCharsets.UTF_8);			
-			JSONTokener contextTokener = new JSONTokener(contextString);
-			dContext = new JSONObject(contextTokener);
-			
-			// (2) transform device characteristics from JSONObject to JSONArray
-			// TODO: input a JSON Object not a file 
-			
-			// test file for multiple solutions
-			// String deviceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Device.json";
-			
-			// test file for no solutions
-			 String deviceFile = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2DeviceNOAT.json";
-			
+			// Transforming solutions: 
+			JSONObject solutions = new JSONObject(); 
 			String deviceString = readFile(deviceFile, StandardCharsets.UTF_8);
 			JSONTokener deviceTokener = new JSONTokener(deviceString);
-			device = new JSONArray(deviceTokener);			
+			JSONArray device = new JSONArray(deviceTokener);			
 		
-			// (3) put JSONArray to context
 			JSONArray sol = new JSONArray(); 
 		    for (int i = 0, size = device.length(); i < size; i++)
 		    {
@@ -226,28 +228,22 @@ public class PrototypeRBMM {
 		        sol.put(value); 
 		      }
 		    }
-		    dContext.put("solutions", sol);		    
-		    // output: store as file: t2Device.jsonld
-		    byte cDataToWrite[] = dContext.toString().getBytes(StandardCharsets.US_ASCII);
-		    // TODO: organize project directories; 
-		    writeFile("C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Device.jsonld", cDataToWrite);
+		    solutions.put(UPREFS.installedSolutions.toString(), sol);
+		    byte cDataToWrite[] = solutions.toString().getBytes(StandardCharsets.US_ASCII);
+		    writeFile(solutionsInput, cDataToWrite);
 		    
 		}
 		else if (command.equals("1")) {
 			
 			LOG.info("Load preferences (JSONLD) and device characteristics (JSONLD)");
-
-			// both input shall be either fetched from GPII or arguments in a match request
-			String prefs = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Common.jsonld";
-			// automatically created in [0]
-			String device = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\t2Device.jsonld";
 			
 			// load accessibility namespace
 			m.setNsPrefix("ax", UPREFS.NS);
-			m = ModelFactory.createDefaultModel().read(prefs, "JSON-LD");
-			Model d = ModelFactory.createDefaultModel().read(device, "JSON-LD");
+			// create RDF Model from preferences and solutions
+			m = ModelFactory.createDefaultModel().read(preferenceInput, "JSON-LD");
+			Model d = ModelFactory.createDefaultModel().read(solutionsInput, "JSON-LD");
 			m.add(d);
-			m.write(System.out);
+			//m.write(System.out);
 
 			// TODO: use ModelFactors or RDFDataMrg ? 
 			//alternative to read preferences from JSONLD			
@@ -256,20 +252,14 @@ public class PrototypeRBMM {
 		}
 		else if (command.equals("2")) {
 			LOG.info("Load other semantic data source (registry and solutions)");
-			/** 
-			 * TODO this are static input source used in the RBMM Web Service.
-			 * These input sources should be exchangeable with any other semantic representations of preference terms or solutions
-			 */
-		    //String reg = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\registry.jsonld";
-		    String sol = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\solutions.jsonld";
 
 		    //Model registry = ModelFactory.createDefaultModel().read(reg, "JSON-LD");
-	        Model uListing = ModelFactory.createDefaultModel().read(sol, "JSON-LD");
+	        Model uListing = ModelFactory.createDefaultModel().read(semanticsSolutions, "JSON-LD");
+	        Model exTerms = ModelFactory.createDefaultModel().read(explodePrefTerms, "JSON-LD");
 	        
 	        // merge the Models
-	        //m = m.union(registry);
-	        m = m.union(uListing);
-	        
+	        m = m.union(exTerms);
+	        //m = m.union(uListing);	        
 	        // print the Model as RDF/XML
 	        m.write(System.out);
 		}
@@ -281,7 +271,7 @@ public class PrototypeRBMM {
 			 * to infer required knowledge for the RBMM reasoning and vocabulary. 
 			 * 
 			 */
-		    String mappingRules = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\mappingRules.rules";
+		    String mappingRules = "C:\\eclipse\\workspace\\PrototypeRBMM_Maven\\RBMMPlayground\\src\\main\\java\\gpii\\testData\\rules\\mappingRules.rules";
 
 		    File f = new File(mappingRules);
 			if (f.exists()) {
@@ -290,11 +280,11 @@ public class PrototypeRBMM {
 				InfModel infModel = ModelFactory.createInfModel(r, m);
 			      // starting the rule execution
 			     infModel.prepare();					
-			      // write down the results in RDF/XML form
-			     infModel.write(System.out);			
-			    
-			    // TODO why am I doing this here?  
-				m.add(infModel.getDeductionsModel());
+			    // TODO why am I doing this here?
+			    Model deducedModel = infModel.getDeductionsModel();  
+				m.add(deducedModel);
+				deducedModel.write(System.out);
+				//m.write(System.out);
 			} else
 				System.out.println("That rules file does not exist.");
 		} 
@@ -330,18 +320,11 @@ public class PrototypeRBMM {
 		    Query query = QueryFactory.create(queryString) ;
 			QueryExecution qexec = QueryExecutionFactory.create(query, m) ;
 			acm = qexec.execConstruct() ;
+			System.out.println( "\n<!-- results of: " +query+" -->" );
+            acm.write( System.out, "RDF/XML-ABBREV" );
 			m.add(acm);
-			m.write(System.out);
-		    
-		    /*QueryExecution qexec = QueryExecutionFactory.create(query, m) ;
-			  try {
-				    ResultSet results = qexec.execSelect() ;
-				    ResultSetFormatter.out(System.out, results, query) ;
-				  } finally { qexec.close() ; }*/			
-			///acm = qexec.execConstruct() ;
-			//m.add(acm);
 			//m.write(System.out);
-			
+		    
 		}		
 		else if (command.equals("6")) {
 			LOG.info("Output: Results as JSONLD object");

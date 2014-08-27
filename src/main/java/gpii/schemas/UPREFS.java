@@ -26,6 +26,13 @@ public class UPREFS {
     
     public static final Resource Environment = m_model.createResource( "http://gpii.org/schemas/accessibility/environment" );
     
+    /** <p>inferred Configuration.</p> */
+    public static final Property inferredConfiguration = m_model.createProperty( "http://rbmm.org/schemas/accessibility/inferredConfiguration" );
+
+    /** <p>launch Solutions.</p> */
+    public static final Resource LaunchSolutions = m_model.createResource( "http://gpii.org/schemas/accessibility/LaunchSolutions" );
+    
+    
     /** <p>Preferences of a person.</p> */
     public static final Property preference = m_model.createProperty( "http://rbmm.org/schemas/accessibility/preference" );
     

@@ -1,0 +1,42 @@
+{
+    "@context": {
+        "applications": "http://rbmm.org/schemas/accessibility/solutions",
+        "name": "http://rbmm.org/schemas/accessibility/solutions/id",
+        "type": "http://rbmm.org/schemas/accessibility/solutions/ATtype"
+    },
+    "applications": [
+        {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.magnifier",
+            "name": "com.microsoft.windows.magnifier",
+            "type": "Magnifier"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/com.yourdolphin.supernova-as",
+            "name": "com.yourdolphin.supernova-as",
+            "type": [
+                "Magnifier",
+                "Screen Reader"
+            ]
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/org.nvda-project",
+            "name": "org.nvda-project",
+            "type": "Screen Reader"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/webinsight.webAnywhere.windows",
+            "name": "webinsight.webAnywhere.windows",
+            "type": "Screen Reader"
+        },        
+        {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.onscreenKeyboard",
+            "name": "com.microsoft.windows.onscreenKeyboard",
+            "type": "Screen Keyboard"
+        },
+        {
+            "@id": "http://registry.gpii.org/applications/com.microsoft.windows.highContrast",
+            "name": "com.microsoft.windows.highContrast",
+            "type": "High Contrast"
+        }
+    ]
+}
